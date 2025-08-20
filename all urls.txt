@@ -1,0 +1,22 @@
+ng serve --host 0.0.0.0
+
+http://103.208.56.35:8081/juteApplication/njb/jute/gallery/image
+
+http://103.208.56.35:9080/juteApplication/njb/jute/gallery/image
+
+
+
+\\10.11.50.251 network access 
+
+http://103.208.56.35:9080/juteApplication/njb/jute/scheme/desc/2
+
+
+
+https://aca.99per.in/CMS/admin
+https://aca.99per.in/BMS/2/admin-home
+
+
+
+
+https://njbuat.utiitsl.com/juteApplication/global/api/pages/29
+response not geting
