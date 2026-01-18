@@ -4,15 +4,61 @@ const cors = require("cors");
 const mongoose = require("./config/database");
 const StudentSchema = require("./config/studentschema");
 const studentschema = require("./config/studentschema");
+const axios = require('axios');
 
 // Enable CORS
 app.use(cors());
 app.use(express.json())
 // Define route
+
+
+const NSE_BASE_URL = 'https://www.nseindia.com';
+
+const axiosInstance = axios.create({
+  baseURL: NSE_BASE_URL,
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+    'Accept': 'application/json',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Referer': 'https://www.nseindia.com/option-chain',
+    'Connection': 'keep-alive'
+  },
+  withCredentials: true
+});
+
+
+app.get('/api/option-chain-next', async (req, res) => {
+  // const { symbol, expiryDate } = req.query;
+
+let symbol ="NIFTY"
+let expiryDate = "20-Jan-2026"
+try {
+    // Step 1: Get cookies
+    await axiosInstance.get('/');
+
+    // Step 2: Call NSE NextApi
+    const response = await axiosInstance.get(
+      `/api/NextApi/apiClient/GetQuoteApi`,
+      {
+        params: {
+          functionName: 'getOptionChainData',
+          symbol,
+          params: `expiryDate=${expiryDate}`
+        }
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Failed to fetch option chain data' });
+  }
+});
+
 app.get("/api", async (req, res) => {
   try {
     const students = await StudentSchema.find();
-    // console.log(students);
+     console.log(students);
     res.json({status:200, message: 'student data found', data:students});
     // res.status(200).json(students);
   } catch (error) {
